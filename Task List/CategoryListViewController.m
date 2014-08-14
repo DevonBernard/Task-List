@@ -19,6 +19,7 @@
 @synthesize categories;
 @synthesize myArray;
 @synthesize name;
+@synthesize objectIDs;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -30,12 +31,15 @@
 }
 - (void)viewWillAppear:(BOOL)animated{
     self.name = [[NSMutableArray alloc] init];
+    self.objectIDs = [[NSMutableArray alloc] init];
     
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     NSManagedObjectContext *context = [appDelegate managedObjectContext];
     NSEntityDescription *entityDesc = [NSEntityDescription entityForName:@"Category" inManagedObjectContext:context];
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:entityDesc];
+    NSSortDescriptor *sortByName = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
+    [request setSortDescriptors:[NSArray arrayWithObject:sortByName]];
     NSManagedObject *matches = nil;
     
     NSError *error;
@@ -51,6 +55,7 @@
         for (int i = 0; i < [objects count]; i++)
         {
             matches = objects[i];
+            [self.objectIDs addObject:[matches objectID]];
             [self.name addObject:[matches valueForKey:@"name"]];
         }
     }
@@ -140,6 +145,13 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
         [self.name removeObjectAtIndex:indexPath.row];
+        
+        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        NSManagedObjectContext *context = [appDelegate managedObjectContext];
+        [context deleteObject:[context objectWithID:[self.objectIDs objectAtIndex:[indexPath row]]]];
+         NSError *error;
+        [context save:&error];
+        
 		[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
@@ -173,21 +185,6 @@
     // Pass the selected object to the new view controller.
 }
 */
-
-- (IBAction)add:(id)sender {
-    /*AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    
-    NSManagedObjectContext *context = [appDelegate managedObjectContext];
-    NSManagedObject *newContact;
-    newContact = [NSEntityDescription insertNewObjectForEntityForName:@"Contact" inManagedObjectContext:context];
-    [newContact setValue: @"Vea Software" forKey:@"name"];
-    [self.name addObject:@"Vea Software"];
-    [newContact setValue: @"(555) 555 - 5555" forKey:@"phone"];
-    [self.phone addObject:@"(555) 555 - 5555"];
-    NSError *error;
-    [context save:&error];
-    [self.tableView reloadData];*/
-}
 
 - (IBAction)AddCategoryButton:(id)sender {
     UIViewController *addCategoryView = [self.storyboard instantiateViewControllerWithIdentifier:@"AddCategory"];

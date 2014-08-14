@@ -10,9 +10,9 @@
 #import <CoreData/CoreData.h>
 
 @interface CategoryListViewController : UITableViewController <UITableViewDelegate, UITableViewDataSource, UITableViewDelegate>
-- (IBAction)add:(id)sender;
 - (IBAction)AddCategoryButton:(id)sender;
 @property (strong, nonatomic) NSMutableArray *name;
+@property (strong, nonatomic) NSMutableArray *objectIDs;
 @property NSArray *categories;
 @property NSMutableArray *myArray;
 
