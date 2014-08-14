@@ -7,6 +7,8 @@
 //
 
 #import "TaskListViewController.h"
+#import "AppDelegate.h"
+#import "AddTaskViewController.h"
 
 @interface TaskListViewController ()
 
@@ -15,6 +17,8 @@
 @implementation TaskListViewController
 
 @synthesize categoryTitle;
+@synthesize desc;
+@synthesize objectIDs;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -24,7 +28,40 @@
     }
     return self;
 }
-
+- (void)viewWillAppear:(BOOL)animated{
+    self.desc = [[NSMutableArray alloc] init];
+    self.objectIDs = [[NSMutableArray alloc] init];
+    
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    NSEntityDescription *entityDesc = [NSEntityDescription entityForName:@"Task" inManagedObjectContext:context];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:entityDesc];
+    NSPredicate *pred =[NSPredicate predicateWithFormat:@"(category = %@)", categoryTitle];
+    [request setPredicate:pred];
+    NSSortDescriptor *sortByName = [[NSSortDescriptor alloc] initWithKey:@"desc" ascending:YES];
+    [request setSortDescriptors:[NSArray arrayWithObject:sortByName]];
+    NSManagedObject *matches = nil;
+    
+    NSError *error;
+    NSArray *objects = [context executeFetchRequest:request
+                                              error:&error];
+    
+    if ([objects count] == 0)
+    {
+        NSLog(@"No matches");
+    }
+    else
+    {
+        for (int i = 0; i < [objects count]; i++)
+        {
+            matches = objects[i];
+            [self.objectIDs addObject:[matches objectID]];
+            [self.desc addObject:[matches valueForKey:@"desc"]];
+        }
+    }
+    [self.tableView reloadData];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -50,26 +87,28 @@
 {
 #warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 #warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    return self.desc.count;
 }
 
-/*
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+    static NSString *cellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     
-    // Configure the cell...
-    
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+    }
+    cell.textLabel.text = [self.desc objectAtIndex:indexPath.row];
     return cell;
 }
-*/
 
 /*
 // Override to support conditional editing of the table view.
@@ -80,18 +119,24 @@
 }
 */
 
-/*
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [self.desc removeObjectAtIndex:indexPath.row];
+        
+        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        NSManagedObjectContext *context = [appDelegate managedObjectContext];
+        [context deleteObject:[context objectWithID:[self.objectIDs objectAtIndex:[indexPath row]]]];
+        NSError *error;
+        [context save:&error];
+        
+		[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+    }
 }
-*/
 
 /*
 // Override to support rearranging the table view.
@@ -120,4 +165,11 @@
 }
 */
 
+- (IBAction)AddTaskButton:(id)sender {
+    AddTaskViewController *addTaskView = [self.storyboard instantiateViewControllerWithIdentifier:@"AddTask"];
+    
+    addTaskView.categoryTitle = categoryTitle;
+    
+    [self.navigationController pushViewController:addTaskView animated:true];
+}
 @end

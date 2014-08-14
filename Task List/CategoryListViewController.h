@@ -14,6 +14,5 @@
 @property (strong, nonatomic) NSMutableArray *name;
 @property (strong, nonatomic) NSMutableArray *objectIDs;
 @property NSArray *categories;
-@property NSMutableArray *myArray;
 
 @end

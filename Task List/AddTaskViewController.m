@@ -7,12 +7,15 @@
 //
 
 #import "AddTaskViewController.h"
+#import "AppDelegate.h"
 
 @interface AddTaskViewController ()
 
 @end
 
 @implementation AddTaskViewController
+
+@synthesize categoryTitle;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -46,4 +49,21 @@
 }
 */
 
+- (IBAction)CreateTaskButton:(id)sender {
+    NSString *description = _TaskDescriptionTextField.text;
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Task Created!" message:description delegate:nil cancelButtonTitle:@"Close" otherButtonTitles:nil, nil];
+    
+    
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    NSManagedObject *newCategory;
+    newCategory = [NSEntityDescription insertNewObjectForEntityForName:@"Task" inManagedObjectContext:context];
+    [newCategory setValue: description forKey:@"desc"];
+    [newCategory setValue: categoryTitle forKey:@"category"];
+    NSError *error;
+    [context save:&error];
+    
+    [alert show];
+}
 @end

@@ -17,7 +17,6 @@
 @implementation CategoryListViewController
 
 @synthesize categories;
-@synthesize myArray;
 @synthesize name;
 @synthesize objectIDs;
 
@@ -98,19 +97,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    /*for(int i = 0; i < 10; i++) {
-        [myArray addObject:[NSNumber numberWithInt:i]];
-    }
-    NSLog(@"Cell at %ld is %@", (long)indexPath.row, [myArray objectAtIndex:indexPath.row]);*/
     static NSString *cellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
-    
-    /*NSMutableString *textblock = [NSMutableString stringWithString:@"Hello "];
-    [textblock appendString:[@([indexPath row]) stringValue]];
-    // Configure the cell...
-    cell.textLabel.text = textblock;//[self.myArray objectAtIndex:[indexPath row]];
-    
-    return cell;*/
     
     if (cell == nil)
     {

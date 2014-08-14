@@ -10,7 +10,10 @@
 
 
 @interface TaskListViewController : UITableViewController
+- (IBAction)AddTaskButton:(id)sender;
 
 @property (nonatomic, strong) NSMutableString *categoryTitle;
+@property (strong, nonatomic) NSMutableArray *desc;
+@property (strong, nonatomic) NSMutableArray *objectIDs;
 
 @end

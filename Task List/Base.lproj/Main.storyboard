@@ -47,10 +47,10 @@
             </objects>
             <point key="canvasLocation" x="352" y="21"/>
         </scene>
-        <!--Add Category View Controller-->
+        <!--Add Category View Controller - Add Category-->
         <scene sceneID="lHq-x8-TIw">
             <objects>
-                <viewController storyboardIdentifier="AddCategory" useStoryboardIdentifierAsRestorationIdentifier="YES" id="cqv-h0-Htf" customClass="AddCategoryViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AddCategory" title="Add Category" useStoryboardIdentifierAsRestorationIdentifier="YES" id="cqv-h0-Htf" customClass="AddCategoryViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Q5p-EJ-GFg"/>
                         <viewControllerLayoutGuide type="bottom" id="dB9-Ms-o8a"/>
@@ -86,6 +86,21 @@
             </objects>
             <point key="canvasLocation" x="812" y="21"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="frf-GO-oZx">
+            <objects>
+                <navigationController definesPresentationContext="YES" id="JFg-tl-4bP" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="wkq-fS-cq4">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Scq-iU-iCv" kind="relationship" relationship="rootViewController" id="RCj-Wq-gGU"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="O8G-lO-71M" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-195" y="751"/>
+        </scene>
         <!--Task List View Controller - Tasks-->
         <scene sceneID="mBf-Jw-9cH">
             <objects>
@@ -95,8 +110,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="luS-Aj-sw1">
-                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" id="luS-Aj-sw1">
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="luS-Aj-sw1" id="4BZ-QW-yPH">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -109,15 +124,33 @@
                             <outlet property="delegate" destination="Scq-iU-iCv" id="zED-Ge-BWK"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" title="Tasks" id="aH7-ZA-G6Y">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="yQ9-wp-EZW">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="WkH-sJ-x6f">
+                                <rect key="frame" x="231" y="0.0" width="73" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <state key="normal" title="Add">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="AddTaskButton:" destination="Scq-iU-iCv" eventType="touchUpInside" id="ZmM-Cz-EOi"/>
+                                </connections>
+                            </button>
+                            <connections>
+                                <action selector="AddTaskButton:" destination="Scq-iU-iCv" id="F9j-7i-UBL"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Joj-Ra-vVr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="352" y="751"/>
         </scene>
-        <!--Add Task View Controller-->
+        <!--Add Task View Controller - Add Task-->
         <scene sceneID="dJP-HQ-ftg">
             <objects>
-                <viewController storyboardIdentifier="AddTask" useStoryboardIdentifierAsRestorationIdentifier="YES" id="xzm-jB-qsx" customClass="AddTaskViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AddTask" title="Add Task" useStoryboardIdentifierAsRestorationIdentifier="YES" id="xzm-jB-qsx" customClass="AddTaskViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Qvc-Fl-o3Q"/>
                         <viewControllerLayoutGuide type="bottom" id="j7U-h5-c9I"/>
@@ -125,8 +158,29 @@
                     <view key="view" contentMode="scaleToFill" id="gya-RO-ZBZ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5j2-hn-12t">
+                                <rect key="frame" x="130" y="204" width="61" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Submit">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="CreateTaskButton:" destination="xzm-jB-qsx" eventType="touchUpInside" id="LfQ-6Y-5Rr"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Task Description" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="M3T-7P-e23">
+                                <rect key="frame" x="20" y="116" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="TaskDescriptionTextField" destination="M3T-7P-e23" id="ZYl-0J-qOf"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NAV-SM-iVM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

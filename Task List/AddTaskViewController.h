@@ -10,4 +10,8 @@
 
 @interface AddTaskViewController : UIViewController
 
+@property (nonatomic, strong) NSMutableString *categoryTitle;
+@property (weak, nonatomic) IBOutlet UITextField *TaskDescriptionTextField;
+- (IBAction)CreateTaskButton:(id)sender;
+
 @end
